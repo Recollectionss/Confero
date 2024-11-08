@@ -7,14 +7,14 @@ export const set = async (message, args) => {
     item.forEach(el => {
         el.trimStart();
         if (el.includes("|")) {
-            stateForNextCommand.agenda.push(`Пункт "${cleanedItem}" додано, але при !next: буде пропущено!.`)
+            const cleanedItem = el.split('|');
+            state.agenda.push(cleanedItem[0]);
+            stateForNextCommand.agenda.push(cleanedItem[1]);
 
-            const cleanedItem = el.replace(/\|/g, '');
-            state.agenda.push(cleanedItem);
-
-            message.channel.send(`Пункт "${cleanedItem}" додано, але при !next: буде пропущено!.`);
+            message.channel.send(`Пункт "${cleanedItem[0]}" додано, але при !next: буде ${cleanedItem[1]}!.`);
         }else{
             state.agenda.push(el);
+            stateForNextCommand.agenda.push(el);
             message.channel.send(`Пункт "${el}" додано.`);
         }
     })
