@@ -26,9 +26,9 @@ export const set = async (message, args) => {
     })
 
     count++;
-    stateForNextCommand.agenda.push(count + '.' +CLOSE_OF_THE_MEETING);
+    stateForTodayCommand.agenda.push(addNumber() + "РІЗНЕ");
 
-    stateForTodayCommand.agenda.push(addNumber() + "РІЗНЕ")
+    stateForNextCommand.agenda.push(CLOSE_OF_THE_MEETING);
 
     function addNumber ()  {
         return count + '.';

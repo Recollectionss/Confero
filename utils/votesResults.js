@@ -1,7 +1,7 @@
 import {TARGET_VOTES, TIME_TO_VOTE} from "../constansts/constans.js";
 import {ComponentType} from "discord.js";
 
-export const votesResults = (pollChannel,pollMessage) => {
+export const votesResults = async (pollChannel,pollMessage) => {
     let votes = { for: 0, against: 0, abstain: 0 };
     let totalVotes = 0;
     const voters = new Set();

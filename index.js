@@ -1,5 +1,5 @@
-import { Client, GatewayIntentBits, Events, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from 'discord.js';
-import {commands} from "./commands.js";
+import { Client, GatewayIntentBits, Events, ButtonStyle, ComponentType } from 'discord.js';
+import {commands} from "./commands/commands.js";
 import 'dotenv/config';
 
 const commandChannelId = process.env.COMMAND_CHANNEL;
