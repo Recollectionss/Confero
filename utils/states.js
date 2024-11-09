@@ -1,6 +1,5 @@
-export const state ={
+export const stateForTodayCommand ={
     agenda: [],
-    currentIndex: 0,
 }
 export const stateForNextCommand = {
     agenda: [],

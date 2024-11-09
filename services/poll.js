@@ -1,10 +1,9 @@
 import {ActionRowBuilder} from 'discord.js';
-import {buttons} from "../utils/constans.js";
+import {buttons} from "../constansts/constans.js";
 import {votesResults} from "../utils/votesResults.js";
 
 export const poll = async (message, args) => {
     const question = args.join(':').trim();
-
     const row = new ActionRowBuilder().addComponents(buttons);
 
     const pollChannel = message.client.channels.cache.get(process.env.POLL_CHANNEL);

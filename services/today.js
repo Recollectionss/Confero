@@ -1,7 +1,7 @@
 import {ActionRowBuilder} from 'discord.js';
-import {buttons} from "../utils/constans.js";
+import {APPROVAL_OF_THE_AGENDA, buttons} from "../constansts/constans.js";
 import {votesResults} from "../utils/votesResults.js";
-import {state} from "../utils/state.js";
+import {stateForTodayCommand} from "../utils/states.js";
 
 export const today = async (message, args) => {
 
@@ -13,7 +13,7 @@ export const today = async (message, args) => {
     }
 
     const pollMessage = await pollChannel.send({
-        content: `**Поставлено на голосування затвердження порядку денного: \n ${state.agenda.join("\n")}**`,
+        content: `**Поставлено на голосування ${APPROVAL_OF_THE_AGENDA}: ${stateForTodayCommand.agenda.join("\n")}**`,
         components: [row],
     });
 

@@ -1,4 +1,4 @@
-import {TARGET_VOTES, TIME_TO_VOIT} from "./constans.js";
+import {TARGET_VOTES, TIME_TO_VOTE} from "../constansts/constans.js";
 import {ComponentType} from "discord.js";
 
 export const votesResults = (pollChannel,pollMessage) => {
@@ -8,7 +8,7 @@ export const votesResults = (pollChannel,pollMessage) => {
 
     const collector = pollMessage.createMessageComponentCollector({
         componentType: ComponentType.Button,
-        time: TIME_TO_VOIT,
+        time: TIME_TO_VOTE,
     });
 
     collector.on('collect', interaction => {
