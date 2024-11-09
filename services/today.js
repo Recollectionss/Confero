@@ -13,7 +13,7 @@ export const today = async (message, args) => {
     }
 
     const pollMessage = await pollChannel.send({
-        content: `**Поставлено на голосування ${APPROVAL_OF_THE_AGENDA}: ${stateForTodayCommand.agenda.join("\n")}**`,
+        content: `**Поставлено на голосування** ${APPROVAL_OF_THE_AGENDA}: ${stateForTodayCommand.agenda.join("\n")}`,
         components: [row],
     });
 

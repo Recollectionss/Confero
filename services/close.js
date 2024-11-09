@@ -11,7 +11,7 @@ export const close = async (message, args) => {
     }
 
     const pollMessage = await pollChannel.send({
-        content: `**Поставлено на голосування: \n ${CLOSE_OF_THE_MEETING}**`,
+        content: `**Поставлено на голосування** \n ${CLOSE_OF_THE_MEETING}`,
         components: [row],
     });
 

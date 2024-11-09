@@ -8,7 +8,13 @@ export const today_info = async (message, args) => {
         return message.channel.send('Канал для опитування не знайдено');
     }
 
-    await pollChannel.send({
-        content: `**${AGENDA}: \n${stateForTodayCommand.agenda.join("\n")}**`,
-    });
+    if(stateForTodayCommand.agenda.length > 0){
+        await pollChannel.send({
+            content: `** ${AGENDA}** \n${stateForTodayCommand.agenda.join("\n")}`,
+        });
+    }else{
+        await pollChannel.send({
+            content: `** ${AGENDA}** \n Відсутній `,
+        });
+    }
 };

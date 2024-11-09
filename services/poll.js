@@ -12,7 +12,7 @@ export const poll = async (message, args) => {
     }
 
     const pollMessage = await pollChannel.send({
-        content: `**Поставлено на голосування: \n ${question}**`,
+        content: `**Поставлено на голосування** \n ${question}`,
         components: [row],
     });
 

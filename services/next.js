@@ -14,7 +14,7 @@ export const next = async (message, args) => {
 
     if (stateForNextCommand.currentIndex !== 1){
         const pollMessage = await pollChannel.send({
-            content: `**Поставлено на голосування: \n ${stateForNextCommand.agenda[stateForNextCommand.currentIndex]}**`,
+            content: `**Поставлено на голосування** \n ${stateForNextCommand.agenda[stateForNextCommand.currentIndex]}`,
             components: [row],
         });
 
