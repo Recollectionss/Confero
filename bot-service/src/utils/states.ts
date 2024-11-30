@@ -1,7 +1,13 @@
-export const stateForTodayCommand ={
-    agenda: [],
+interface State {
+  agenda: string[];
 }
-export const stateForNextCommand = {
-    agenda: [],
-    currentIndex: 0,
+interface StateForNextCommand extends State {
+  currentIndex: number;
 }
+export const stateForTodayCommand: State = {
+  agenda: [],
+};
+export const stateForNextCommand: StateForNextCommand = {
+  agenda: [],
+  currentIndex: 0,
+};

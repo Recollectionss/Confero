@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, TextChannel } from 'discord.js';
 import { poll } from '../services/poll';
 import { set } from '../services/set';
 import { today } from '../services/today';
@@ -7,7 +7,7 @@ import { next } from '../services/next';
 import { open } from '../services/open';
 import { close } from '../services/close';
 
-type Command = (message: Message, args: string[]) => ;
+export type Command = (message: Message, args: string[], poolChannel: TextChannel) => Promise<void>;
 
 export const commands: Record<string, Command> = {
   pool: poll,

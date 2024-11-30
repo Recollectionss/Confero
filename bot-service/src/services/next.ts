@@ -1,21 +1,23 @@
-import { ActionRowBuilder, ButtonBuilder, TextChannel } from 'discord.js';
-import { buttons } from '../constansts/constans';
-import { votesResults } from 'utils/votesResults';
-import { stateForNextCommand } from 'utils/states';
+import { ActionRowBuilder, ButtonBuilder, Message, TextChannel } from 'discord.js';
+import { buttons, PUT_TO_A_VOTE } from '../constants/constants';
+import { votesResults } from '../utils/votesResults';
+import { stateForNextCommand } from '../utils/states';
 import { today } from './today';
-// TODO: нужно дописать тут next и потом настроить сохранение данных в бд
-export const next = async (message, args, pollChannel: TextChannel) => {
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
+import { Command } from '../commands/commands';
 
-  if (stateForNextCommand.currentIndex !== 1) {
+export const next: Command = async (message: Message, args: string[], pollChannel: TextChannel) => {
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
+  if (stateForNextCommand.currentIndex > stateForNextCommand.agenda.length) {
+    pollChannel.send('Питання порядку денного вичерпані');
+  } else if (stateForNextCommand.currentIndex == 1) {
+    today(message, args, pollChannel);
+  } else {
     const pollMessage = await pollChannel.send({
-      content: `**Поставлено на голосування** \n ${stateForNextCommand.agenda[stateForNextCommand.currentIndex]}`,
+      content: `${PUT_TO_A_VOTE} \n ${stateForNextCommand.agenda[stateForNextCommand.currentIndex]}`,
       components: [row],
     });
 
     votesResults(pollChannel, pollMessage);
-  } else {
-    today(message, args);
   }
 
   stateForNextCommand.currentIndex++;
