@@ -1,4 +1,4 @@
-import {TARGET_VOTES, TIME_TO_VOTE} from "../constansts/constans.js";
+import {TARGET_VOTES, TIME_TO_VOTE} from "constansts/constans";
 import {ComponentType} from "discord.js";
 
 export const votesResults = async (pollChannel,pollMessage) => {
