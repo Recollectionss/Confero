@@ -6,7 +6,7 @@ type Votes = {
   against: number;
   abstain: number;
 };
-
+// TODO: Треба реалізувати виведення всіх хто голосував
 export const votesResults = async (pollChannel: TextChannel, pollMessage: Message) => {
   const votes: Votes = { for: 0, against: 0, abstain: 0 };
   let totalVotes = 0;

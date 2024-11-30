@@ -1,10 +1,10 @@
-import { Client, GatewayIntentBits, Events, Message, TextChannel } from 'discord.js';
-import { commands } from './src/commands/commands';
-import { configDotenv } from 'dotenv';
+import { Client, Events, GatewayIntentBits, Message, TextChannel } from 'discord.js';
+import dotenv from 'dotenv';
 import * as process from 'node:process';
-configDotenv();
+import CommandHandler from './src/utils/CommandHandler';
 
-const commandChannelId = process.env.COMMAND_CHANNEL;
+dotenv.config();
+
 let pollChannel: TextChannel;
 
 const client = new Client({
@@ -36,12 +36,7 @@ async function startApp() {
   });
 
   client.on(Events.MessageCreate, async (message: Message) => {
-    if (message.author.bot || message.channel.id !== commandChannelId) return;
-
-    const [command, ...args] = message.content.slice(1).split(':');
-    if (commands[command]) {
-      commands[command](message, args, pollChannel);
-    }
+    CommandHandler.handle(message, pollChannel);
   });
 }
 

@@ -8,9 +8,9 @@ import { open } from '../services/open';
 import { close } from '../services/close';
 
 export type Command = (message: Message, args: string[], poolChannel: TextChannel) => Promise<void>;
-
+// TODO: Створити команду для виведення всієї інформації від відкриття засідання до закриття
 export const commands: Record<string, Command> = {
-  pool: poll,
+  poll: poll,
   open: open,
   close: close,
   set: set,
