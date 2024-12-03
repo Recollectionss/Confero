@@ -6,15 +6,28 @@ import { today_info } from '../services/today_info';
 import { next } from '../services/next';
 import { open } from '../services/open';
 import { close } from '../services/close';
+import { help } from '../services/help';
 
-export type Command = (message: Message, args: string[], poolChannel: TextChannel) => Promise<void>;
-// TODO: Створити команду для виведення всієї інформації від відкриття засідання до закриття
-export const commands: Record<string, Command> = {
-  poll: poll,
-  open: open,
-  close: close,
-  set: set,
-  today: today,
-  today_info: today_info,
-  next: next,
+export type CommandWithArgs = (message: Message, args: string[], poolChannel: TextChannel) => Promise<void>;
+
+export type CommandWithoutArgs = (channel: TextChannel) => Promise<void>;
+
+type CommandsList = {
+  withArgs: Record<string, CommandWithArgs>;
+  withoutArgs: Record<string, CommandWithoutArgs>;
+};
+
+export const commands: CommandsList = {
+  withArgs: {
+    poll: poll,
+    set: set,
+  },
+  withoutArgs: {
+    help: help,
+    open: open,
+    close: close,
+    today: today,
+    today_info: today_info,
+    next: next,
+  },
 };

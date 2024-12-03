@@ -8,32 +8,45 @@ const commandChannelId = process.env.COMMAND_CHANNEL as string;
 class CommandHandler {
   handle(message: Message, pollChannel: TextChannel) {
     if (message.author.bot || message.channel.id !== commandChannelId) return;
-
-    const { command, args } = this.parse(message);
-    console.log(this.parse(message));
-    if (commands[command]) {
-      console.log(commands[command]);
-      commands[command](message, args, pollChannel);
-    }
+    this.executeCommand(message, pollChannel);
   }
-  parse(message: Message): { command: string; args: string[] } {
-    const [command, ...argsParts] = message.content.slice(1).split(':');
-    let args: string[];
-    const argsJoined = argsParts.join(':');
-    if (argsJoined.length < 1) {
-      return { command, args: [] };
+  executeCommand(message: Message, pollChannel: TextChannel) {
+    const [command, ...argsParts] = this.parseCommand(message);
+    if (!commands.withoutArgs[command] && !commands.withArgs[command]) {
+      (message.channel as TextChannel).send(`Unknown command: ${command}`);
+      return;
+    }
+    if (commands.withoutArgs[command]) {
+      commands.withoutArgs[command](command === 'help' ? (message.channel as TextChannel) : pollChannel);
     } else {
-      if (argsJoined.includes('/')) {
-        if (command !== 'set') {
-          (message.channel as TextChannel).send(`Неправильна команда, виконається просто ${command}`);
-          return { command, args: [] };
-        }
-        args = argsJoined.split('/');
-      } else {
-        args = [argsJoined];
+      try {
+        const args = this.parseArgs(command, argsParts);
+        commands.withArgs[command](message, args, pollChannel);
+      } catch (e) {
+        console.error(`Error executing command "${command}":`, e);
+        (message.channel as TextChannel).send(`${e}`);
       }
     }
-    return { command, args };
+  }
+  parseCommand(message: Message) {
+    return message.content.slice(1).split(':');
+  }
+  parseArgs(command: string, args: string[]) {
+    const argsJoined = args.join('');
+    let trueArgs: string[];
+
+    if (!argsJoined) throw new Error('Invalid args');
+
+    if (argsJoined.includes('/')) {
+      if (command !== 'set') {
+        throw new Error('Invalid args');
+      }
+      trueArgs = argsJoined.split('/');
+    } else {
+      trueArgs = [argsJoined];
+    }
+
+    return trueArgs;
   }
 }
 
