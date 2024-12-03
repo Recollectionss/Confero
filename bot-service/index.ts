@@ -29,7 +29,7 @@ async function startApp() {
     }
 
     if (pollChannel) {
-      console.log('Канал для опитування знайдено');
+      console.log('Poll channel found');
     } else {
       console.error('Poll channel is not found');
     }
