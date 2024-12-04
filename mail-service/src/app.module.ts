@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EmailModule } from './email/email.module';
+import { MailModule } from './email/mail.module';
 import { ConfigModule } from '@nestjs/config';
 import config from './config/config';
 
 @Module({
   imports: [
-    EmailModule,
+    MailModule,
     ConfigModule.forRoot({
       envFilePath: './.env',
       isGlobal: true,

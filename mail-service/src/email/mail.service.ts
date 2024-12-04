@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
+import { GET_EMAIL_HTML } from '../utils/get_email_html';
 
 @Injectable()
-export class EmailService {
+export class MailService {
   private transporter: nodemailer.Transporter;
 
   constructor(private readonly configService: ConfigService) {
@@ -18,19 +19,14 @@ export class EmailService {
     });
   }
 
-  async sendEmail(
-    to: string,
-    subject: string,
-    text: string,
-    html?: string,
-  ): Promise<void> {
+  async sendEmail(to: string, subject: string, link: string): Promise<void> {
     try {
       await this.transporter.sendMail({
         from: `"Confero" <${process.env.SMTP_USERNAME}>`,
         to,
         subject,
-        text,
-        html,
+        text: '',
+        html: GET_EMAIL_HTML(link),
       });
       console.log('Email sent');
     } catch (err) {
