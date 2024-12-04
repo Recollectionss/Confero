@@ -8,16 +8,16 @@ import { CommandWithoutArgs } from '../commands/commands';
 export const next: CommandWithoutArgs = async (pollChannel: TextChannel) => {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
   if (stateForNextCommand.currentIndex > stateForNextCommand.agenda.length) {
-    pollChannel.send('Питання порядку денного вичерпані');
+    await pollChannel.send('Питання порядку денного вичерпані');
   } else if (stateForNextCommand.currentIndex == 1) {
-    today(pollChannel);
+    await today(pollChannel);
   } else {
     const pollMessage = await pollChannel.send({
       content: `${PUT_TO_A_VOTE} \n ${stateForNextCommand.agenda[stateForNextCommand.currentIndex]}`,
       components: [row],
     });
 
-    votesResults(pollChannel, pollMessage);
+    await votesResults(pollChannel, pollMessage);
   }
 
   stateForNextCommand.currentIndex++;

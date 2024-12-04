@@ -1,7 +1,7 @@
 import { Client, Events, GatewayIntentBits, Message, TextChannel } from 'discord.js';
 import dotenv from 'dotenv';
 import * as process from 'node:process';
-import CommandHandler from './src/utils/CommandHandler';
+import CommandHandler from './utils/CommandHandler';
 
 dotenv.config();
 
@@ -34,10 +34,10 @@ async function startApp() {
       console.error('Poll channel is not found');
     }
   });
-
-  client.on(Events.MessageCreate, async (message: Message) => {
-    CommandHandler.handle(message, pollChannel);
-  });
 }
 
 startApp();
+
+client.on(Events.MessageCreate, async (message: Message) => {
+  await CommandHandler.handle(message, pollChannel);
+});

@@ -6,32 +6,32 @@ dotenv.config();
 const commandChannelId = process.env.COMMAND_CHANNEL as string;
 
 class CommandHandler {
-  handle(message: Message, pollChannel: TextChannel) {
+  async handle(message: Message, pollChannel: TextChannel) {
     if (message.author.bot || message.channel.id !== commandChannelId) return;
-    this.executeCommand(message, pollChannel);
+    await this.executeCommand(message, pollChannel);
   }
-  executeCommand(message: Message, pollChannel: TextChannel) {
-    const [command, ...argsParts] = this.parseCommand(message);
+  async executeCommand(message: Message, pollChannel: TextChannel) {
+    const [command, ...argsParts] = await this.parseCommand(message);
     if (!commands.withoutArgs[command] && !commands.withArgs[command]) {
-      (message.channel as TextChannel).send(`Unknown command: ${command}`);
+      await (message.channel as TextChannel).send(`Unknown command: ${command}`);
       return;
     }
     if (commands.withoutArgs[command]) {
-      commands.withoutArgs[command](command === 'help' ? (message.channel as TextChannel) : pollChannel);
+      await commands.withoutArgs[command](command === 'help' ? (message.channel as TextChannel) : pollChannel);
     } else {
       try {
-        const args = this.parseArgs(command, argsParts);
-        commands.withArgs[command](message, args, pollChannel);
+        const args = await this.parseArgs(command, argsParts);
+        await commands.withArgs[command](message, args, pollChannel);
       } catch (e) {
         console.error(`Error executing command "${command}":`, e);
-        (message.channel as TextChannel).send(`${e}`);
+        await (message.channel as TextChannel).send(`${e}`);
       }
     }
   }
-  parseCommand(message: Message) {
+  async parseCommand(message: Message) {
     return message.content.slice(1).split(':');
   }
-  parseArgs(command: string, args: string[]) {
+  async parseArgs(command: string, args: string[]) {
     const argsJoined = args.join('');
     let trueArgs: string[];
 

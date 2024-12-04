@@ -11,5 +11,5 @@ export const poll: CommandWithArgs = async (message: Message, args: string[], po
     components: [row],
   });
 
-  votesResults(pollChannel, pollMessage);
+  await votesResults(pollChannel, pollMessage);
 };
