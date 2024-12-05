@@ -7,6 +7,7 @@ import { next } from '../services/next';
 import { open } from '../services/open';
 import { close } from '../services/close';
 import { help } from '../services/help';
+import { registry_open } from '../services/registry_open';
 
 export type CommandWithArgs = (message: Message, args: string[], poolChannel: TextChannel) => Promise<void>;
 
@@ -29,5 +30,6 @@ export const commands: CommandsList = {
     today: today,
     today_info: today_info,
     next: next,
+    registry_open: registry_open,
   },
 };

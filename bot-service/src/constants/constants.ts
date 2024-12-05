@@ -5,6 +5,10 @@ export const buttons: ButtonBuilder[] = [
   new ButtonBuilder().setCustomId('against').setLabel('Проти').setStyle(ButtonStyle.Danger),
   new ButtonBuilder().setCustomId('abstain').setLabel('Утримуюсь').setStyle(ButtonStyle.Secondary),
 ];
+export const REGISTRATION_BUTTON: ButtonBuilder = new ButtonBuilder()
+  .setCustomId('registrationButton')
+  .setLabel('Зараєструватись')
+  .setStyle(ButtonStyle.Primary);
 
 export const TIME_TO_VOTE = /*5*/ 0.5 * 60 * 1000;
 export const TARGET_VOTES = 11;
