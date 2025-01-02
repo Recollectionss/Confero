@@ -1,5 +1,6 @@
 import { TARGET_VOTES, TIME_TO_VOTE } from '../constants/constants';
 import { ButtonComponent, ComponentType, Message, TextChannel } from 'discord.js';
+import { User } from '../db/models/user';
 
 type Votes = {
   for: number;
@@ -17,12 +18,17 @@ export const votesResults = async (pollChannel: TextChannel, pollMessage: Messag
     time: TIME_TO_VOTE,
   });
 
-  collector.on('collect', (interaction) => {
+  collector.on('collect', async (interaction) => {
     const userId: string = interaction.user.id;
     const vote: string = interaction.customId;
+    const user = await User.findOne({ where: { discordId: userId } });
 
+    if (!user) {
+      await interaction.reply({ content: 'У вас немає прав голосувати', ephemeral: true });
+      return;
+    }
     if (!(vote in votes)) {
-      interaction.reply({ content: 'Недійсний голос!', ephemeral: true });
+      await interaction.reply({ content: 'Недійсний голос!', ephemeral: true });
       return;
     }
 
@@ -32,7 +38,7 @@ export const votesResults = async (pollChannel: TextChannel, pollMessage: Messag
       votes[userVote.now as keyof Votes] -= 1;
       userVote.now = vote;
 
-      interaction.reply({
+      await interaction.reply({
         content: `Ви змінили голос на: ${(interaction.component as ButtonComponent).label}`,
         ephemeral: true,
       });
@@ -41,10 +47,10 @@ export const votesResults = async (pollChannel: TextChannel, pollMessage: Messag
 
     voters.set(userId, { now: vote });
 
-    if (votes.hasOwnProperty(vote)) {
+    if (Object.prototype.hasOwnProperty.call(votes, vote)) {
       votes[vote as keyof Votes] += 1;
       totalVotes++;
-      interaction.reply({
+      await interaction.reply({
         content: `Ваш голос за: ${(interaction.component as ButtonComponent).label}`,
         ephemeral: true,
       });

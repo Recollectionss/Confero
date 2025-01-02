@@ -10,6 +10,7 @@ class CommandHandler {
     if (message.author.bot || message.channel.id !== commandChannelId) return;
     await this.executeCommand(message, pollChannel);
   }
+
   async executeCommand(message: Message, pollChannel: TextChannel) {
     const [command, ...argsParts] = await this.parseCommand(message);
     if (!commands.withoutArgs[command] && !commands.withArgs[command]) {
@@ -28,9 +29,11 @@ class CommandHandler {
       }
     }
   }
+
   async parseCommand(message: Message) {
     return message.content.slice(1).split(':');
   }
+
   async parseArgs(command: string, args: string[]) {
     const argsJoined = args.join('');
     let trueArgs: string[];

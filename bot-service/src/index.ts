@@ -1,7 +1,7 @@
 import { Client, Events, GatewayIntentBits, Message, TextChannel } from 'discord.js';
 import dotenv from 'dotenv';
-import * as process from 'node:process';
 import CommandHandler from './utils/CommandHandler';
+import { connectDB } from './db/db_connect';
 
 dotenv.config();
 
@@ -12,6 +12,7 @@ const client = new Client({
 });
 
 async function startApp() {
+  await connectDB();
   await client.login(process.env.DISCORD_TOKEN);
 
   client.once(Events.ClientReady, async () => {

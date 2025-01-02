@@ -20,3 +20,5 @@ export const CLOSE_OF_THE_MEETING = 'Закриття засідання';
 
 export const APPROVAL_OF_THE_AGENDA = 'затвердження порядку денного';
 export const AGENDA = 'Порядок денний';
+
+export const POSTGRES = 'postgres';

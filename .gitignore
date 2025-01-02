@@ -1,6 +1,6 @@
 node_modules
 bot-service/.env
 .idea/
-/.env
+/docker/.env
 /mail-service/.env
 /mail-service/dist/

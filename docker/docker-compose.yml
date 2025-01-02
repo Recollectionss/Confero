@@ -1,35 +1,23 @@
 version: '3.8'
+name: vote_project
 
 services:
-  rabbitmq:
-    image: rabbitmq:3.10.7-management
-    hostname: rabbitmq
+  postgres:
+    image: postgres:16.3
     restart: always
-    env_file:
-      - ../.env
+    container_name: postgress
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
-      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
-    ports:
-      - "15672:15672"
-      - "5672:5672"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    restart: always
+      - ./db_init:/docker-entrypoint-initdb.d/
+      - postgres-data:/var/lib/postgresql/data
+    entrypoint: >
+      sh -c "chmod +x /docker-entrypoint-initdb.d/db_init.sh && exec docker-entrypoint.sh postgres"
     ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    env_file: .env
 
 volumes:
-  mongo_data:
+  postgres-data:
   rabbitmq_data:
