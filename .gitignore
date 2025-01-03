@@ -4,3 +4,4 @@ bot-service/.env
 /docker/.env
 /mail-service/.env
 /mail-service/dist/
+/bot-service/src/db/seeders/20250103131237-create_delegates.js

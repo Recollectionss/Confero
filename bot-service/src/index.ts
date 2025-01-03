@@ -1,8 +1,8 @@
 import { Client, Events, GatewayIntentBits, Message, TextChannel } from 'discord.js';
-import dotenv from 'dotenv';
-import CommandHandler from './utils/CommandHandler';
 import { connectDB } from './db/db_connect';
-
+import { ENV_CONSTANTS } from './constants/env_constants';
+import CommandHandler from './utils/command_handler';
+import dotenv from 'dotenv';
 dotenv.config();
 
 let pollChannel: TextChannel;
@@ -13,7 +13,7 @@ const client = new Client({
 
 async function startApp() {
   await connectDB();
-  await client.login(process.env.DISCORD_TOKEN);
+  await client.login(ENV_CONSTANTS.discord.token);
 
   client.once(Events.ClientReady, async () => {
     if (client.user) {
@@ -23,7 +23,7 @@ async function startApp() {
     }
 
     try {
-      pollChannel = (await client.channels.fetch(process.env.POLL_CHANNEL as string)) as TextChannel;
+      pollChannel = (await client.channels.fetch(ENV_CONSTANTS.discord.pollChannel)) as TextChannel;
       console.log('Poll channel initialized:', pollChannel?.id);
     } catch (error) {
       console.error('Failed to fetch pollChannel:', error);

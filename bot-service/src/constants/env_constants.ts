@@ -1,8 +1,26 @@
+import dotenv from 'dotenv';
+import process from 'node:process';
+dotenv.config();
 export const ENV_CONSTANTS = {
-  //   postgres
-  port: process.env.POSTGRES_PORT || 5432,
-  username: process.env.POSTGRES_USER || 'root',
-  password: process.env.POSTGRES_PASSWORD || 'toor',
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DB || 'confero',
+  // discord-bot
+  discord: {
+    token: String(process.env.DISCORD_TOKEN),
+    pollChannel: String(process.env.POLL_CHANNEL),
+    commandChannel: String(process.env.COMMAND_CHANNEL),
+  },
+  //postgres
+  db: {
+    port: Number(process.env.POSTGRES_PORT),
+    username: process.env.POSTGRES_USERNAME,
+    password: String(process.env.POSTGRES_PASSWORD),
+    host: Number(process.env.POSTGRES_HOST),
+    database: process.env.POSTGRES_DB,
+  },
+  //smtp
+  smtp: {
+    user: process.env.SMTP_USERNAME,
+    pass: String(process.env.SMTP_PASSWORD),
+    host: String(process.env.SMTP_HOST),
+    port: Number(process.env.SMTP_PORT),
+  },
 };

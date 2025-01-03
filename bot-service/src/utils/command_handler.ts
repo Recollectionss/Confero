@@ -1,13 +1,10 @@
 import { Message, TextChannel } from 'discord.js';
 import { commands } from '../commands/commands';
-import process from 'node:process';
-import dotenv from 'dotenv';
-dotenv.config();
-const commandChannelId = process.env.COMMAND_CHANNEL as string;
+import { ENV_CONSTANTS } from '../constants/env_constants';
 
 class CommandHandler {
   async handle(message: Message, pollChannel: TextChannel) {
-    if (message.author.bot || message.channel.id !== commandChannelId) return;
+    if (message.author.bot || message.channel.id !== ENV_CONSTANTS.discord.commandChannel) return;
     await this.executeCommand(message, pollChannel);
   }
 

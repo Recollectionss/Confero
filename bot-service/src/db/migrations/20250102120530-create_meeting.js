@@ -26,7 +26,7 @@ module.exports = {
         onUpdate: 'CASCADE',
       },
       userId: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
         references: {
           model: 'Users',
           key: 'userId',

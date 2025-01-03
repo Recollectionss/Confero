@@ -5,12 +5,12 @@ import { POSTGRES } from '../constants/constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 export const sequelize: Sequelize = new Sequelize({
-  host: ENV_CONSTANTS.host,
+  host: ENV_CONSTANTS.db.host,
   dialect: POSTGRES,
-  port: ENV_CONSTANTS.port,
-  username: ENV_CONSTANTS.username,
-  password: String(ENV_CONSTANTS.password),
-  database: ENV_CONSTANTS.database,
+  port: ENV_CONSTANTS.db.port,
+  username: ENV_CONSTANTS.db.username,
+  password: String(ENV_CONSTANTS.db.password),
+  database: ENV_CONSTANTS.db.database,
 });
 
 export const connectDB = async () => {

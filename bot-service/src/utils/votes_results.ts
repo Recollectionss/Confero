@@ -21,7 +21,7 @@ export const votesResults = async (pollChannel: TextChannel, pollMessage: Messag
   collector.on('collect', async (interaction) => {
     const userId: string = interaction.user.id;
     const vote: string = interaction.customId;
-    const user = await User.findOne({ where: { discordId: userId } });
+    const user = await User.findByPk(userId);
 
     if (!user) {
       await interaction.reply({ content: 'У вас немає прав голосувати', ephemeral: true });

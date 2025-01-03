@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, TextChannel } from 'discord.js';
 import { buttons, OPEN_OF_THE_MEETING, PUT_TO_A_VOTE } from '../constants/constants';
-import { votesResults } from '../utils/votesResults';
 import { CommandWithoutArgs } from '../commands/commands';
+import { votesResults } from '../utils/votes_results';
 
 export const open: CommandWithoutArgs = async (pollChannel: TextChannel) => {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);

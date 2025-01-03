@@ -4,10 +4,11 @@
 module.exports = {
   up: async function (queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
-      discordId: {
-        type: Sequelize.BIGINT,
+      userId: {
+        type: Sequelize.STRING,
         unique: true,
         allowNull: false,
+        primaryKey: true,
       },
       name: {
         type: Sequelize.STRING(50),
@@ -17,15 +18,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
-      },
-      roleId: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'Role',
-          key: 'roleId',
-        },
-        onDelete: 'SET NULL',
-        onUpdate: 'CASCADE',
       },
       createdAt: {
         type: Sequelize.DATE,

@@ -3,21 +3,20 @@ import { DataType } from 'sequelize-typescript';
 import { sequelize } from '../db_connect';
 
 export class User extends Model {
-  public userId!: number;
+  public userId!: string;
   public name!: string;
   public email!: string;
-  public discordId!: number;
-  public roleId!: number | null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
 User.init(
   {
-    discordId: {
-      type: DataType.BIGINT,
+    userId: {
+      type: DataType.STRING,
       allowNull: false,
       unique: true,
+      primaryKey: true,
     },
     name: {
       type: DataType.STRING,
@@ -27,15 +26,6 @@ User.init(
       type: DataType.STRING,
       allowNull: false,
       unique: true,
-    },
-    roleId: {
-      type: DataType.UUID,
-      allowNull: true,
-      references: {
-        model: 'Role',
-        key: 'role_id',
-      },
-      onUpdate: 'CASCADE',
     },
   },
   {
