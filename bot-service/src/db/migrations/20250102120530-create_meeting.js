@@ -15,24 +15,6 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('now'),
       },
-    });
-    await queryInterface.createTable('MeetingUsers', {
-      meetingId: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'Meeting',
-          key: 'meetingId',
-        },
-        onUpdate: 'CASCADE',
-      },
-      userId: {
-        type: Sequelize.STRING,
-        references: {
-          model: 'Users',
-          key: 'userId',
-        },
-        onUpdate: 'CASCADE',
-      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -48,7 +30,6 @@ module.exports = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('MeetingUsers');
     await queryInterface.dropTable('Meeting');
   },
 };

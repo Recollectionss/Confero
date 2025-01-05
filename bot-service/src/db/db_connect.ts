@@ -11,6 +11,7 @@ export const sequelize: Sequelize = new Sequelize({
   username: ENV_CONSTANTS.db.username,
   password: String(ENV_CONSTANTS.db.password),
   database: ENV_CONSTANTS.db.database,
+  logging: console.log,
 });
 
 export const connectDB = async () => {

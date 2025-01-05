@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('RegistrationToken', {
+    await queryInterface.createTable('RegistrationOnMeeting', {
       token: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.fn('uuid_generate_v4'),
@@ -11,13 +11,28 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      meetingId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Meeting',
+          key: 'meetingId',
+        },
+        onUpdate: 'CASCADE',
+      },
       userId: {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
-          model: 'Users',
+          model: 'User',
           key: 'userId',
         },
+        onUpdate: 'CASCADE',
+      },
+      userVerified: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -34,6 +49,6 @@ module.exports = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('RegistrationToken');
+    await queryInterface.dropTable('RegistrationOnMeeting');
   },
 };

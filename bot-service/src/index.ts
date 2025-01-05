@@ -1,4 +1,4 @@
-import { Client, Events, GatewayIntentBits, Message, TextChannel } from 'discord.js';
+import { Client, Events, GatewayIntentBits, Message, Partials, TextChannel } from 'discord.js';
 import { connectDB } from './db/db_connect';
 import { ENV_CONSTANTS } from './constants/env_constants';
 import CommandHandler from './utils/command_handler';
@@ -8,7 +8,13 @@ dotenv.config();
 let pollChannel: TextChannel;
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.DirectMessages,
+  ],
+  partials: [Partials.Channel],
 });
 
 async function startApp() {

@@ -10,7 +10,7 @@ export const REGISTRATION_BUTTON: ButtonBuilder = new ButtonBuilder()
   .setLabel('Зараєструватись')
   .setStyle(ButtonStyle.Primary);
 
-export const TIME_TO_VOTE = /*5*/ 0.5 * 60 * 1000;
+export const TIME_TO_VOTE = 2 /*2*/ * 60 * 1000;
 export const TARGET_VOTES = 11;
 
 export const PUT_TO_A_VOTE = '**Поставлено на голосування**';

@@ -1,4 +1,5 @@
 import { Model } from 'sequelize';
+
 import { sequelize } from '../db_connect';
 import { DataType } from 'sequelize-typescript';
 
@@ -15,6 +16,8 @@ Meeting.init(
       type: DataType.UUID,
       allowNull: false,
       unique: true,
+      defaultValue: DataType.UUIDV4,
+      primaryKey: true,
     },
     date: {
       type: DataType.DATE,
