@@ -25,7 +25,6 @@ export const sendMail = async (options: MailOptionsInterface) => {
     console.log('Email sent: ', info.response);
     return info;
   } catch (error) {
-    console.error('Error occurred while sending email: ', error);
-    throw new Error('Email sending failed');
+    console.log('Error occurred while sending email: ', error);
   }
 };

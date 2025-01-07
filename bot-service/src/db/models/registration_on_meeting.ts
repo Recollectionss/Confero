@@ -8,6 +8,7 @@ export class RegistrationOnMeeting extends Model {
   public meetingId!: string;
   public userId!: string;
   public userVerified!: boolean;
+
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 

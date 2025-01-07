@@ -1,6 +1,6 @@
 import { TARGET_VOTES, TIME_TO_VOTE } from '../constants/constants';
 import { ButtonComponent, ComponentType, Message, TextChannel } from 'discord.js';
-import { User } from '../db/models/user';
+import { User } from '../db/models';
 
 type Votes = {
   for: number;
@@ -8,12 +8,12 @@ type Votes = {
   abstain: number;
 };
 // TODO: Треба реалізувати виведення всіх хто голосував
-export const votesResults = async (pollChannel: TextChannel, pollMessage: Message) => {
+export const votesResults = async (message: Message) => {
   const votes: Votes = { for: 0, against: 0, abstain: 0 };
   let totalVotes = 0;
   const voters = new Map();
 
-  const collector = pollMessage.createMessageComponentCollector({
+  const collector = message.createMessageComponentCollector({
     componentType: ComponentType.Button,
     time: TIME_TO_VOTE,
   });
@@ -68,7 +68,7 @@ export const votesResults = async (pollChannel: TextChannel, pollMessage: Messag
     resultMessage = `Результати голосування:\nЗА: ${votes.for}\nПроти: ${votes.against}\nУтримуюсь: ${votes.abstain}\n \n`;
     if (totalVotes < 6) {
       resultMessage += 'Рішення не прийнято недостатня кількість голосів';
-      pollChannel.send(resultMessage);
+      (message.channel as TextChannel).send(resultMessage);
       return;
     }
 
@@ -81,7 +81,7 @@ export const votesResults = async (pollChannel: TextChannel, pollMessage: Messag
         resultMessage += `Єдиноголосно УТРИМУЮСЬ — рішення не прийнято.`;
       }
 
-      pollChannel.send(resultMessage);
+      (message.channel as TextChannel).send(resultMessage);
       return;
     }
 
@@ -91,6 +91,6 @@ export const votesResults = async (pollChannel: TextChannel, pollMessage: Messag
       resultMessage += 'Рішення не прийнято.';
     }
 
-    pollChannel.send(resultMessage);
+    (message.channel as TextChannel).send(resultMessage);
   });
 };

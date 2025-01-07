@@ -11,5 +11,5 @@ export const open: CommandWithoutArgs = async (pollChannel: TextChannel) => {
     components: [row],
   });
 
-  await votesResults(pollChannel, pollMessage);
+  await votesResults(pollMessage);
 };

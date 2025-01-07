@@ -6,6 +6,10 @@ export class Poll extends Model {
   public pollId!: number;
   public question!: string;
   public meetingId!: string;
+  public date!: Date;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 Poll.init(

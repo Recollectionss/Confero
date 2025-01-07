@@ -23,32 +23,21 @@ module.exports = {
           key: 'meetingId',
         },
       },
-    });
-    await queryInterface.createTable('Voted', {
-      votedId: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.fn('uuid_generate_v4'),
+      createdAt: {
+        type: Sequelize.DATE,
         allowNull: false,
-        primaryKey: true,
-        unique: true,
+        defaultValue: Sequelize.fn('NOW'),
       },
-      votedFor: {
-        type: Sequelize.STRING,
+      updatedAt: {
+        type: Sequelize.DATE,
         allowNull: false,
-      },
-      pollId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'Poll',
-          key: 'pollId',
-        },
+        defaultValue: Sequelize.fn('NOW'),
       },
     });
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Voted');
     await queryInterface.dropTable('Poll');
   },
 };

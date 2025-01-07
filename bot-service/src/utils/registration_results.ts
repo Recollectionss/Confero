@@ -63,7 +63,7 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
       const minTargetVotes =
         registeredUsers.length % 2 === 1 ? registeredUsers.length / 2 : registeredUsers.length / 2 + 1;
 
-      result += `Всього зареєстровано ${registrations.length} \n Кворум - ${kvorum ? 'є' : 'немає'} \n`;
+      result += `Всього зареєстровано ${registrations.length} \nКворум - ${kvorum ? 'є' : 'немає'} \n`;
       result += `Мінімальна кількість голосів для прийняття рішення: ${minTargetVotes} \n`;
 
       registrations.forEach((registration) => {

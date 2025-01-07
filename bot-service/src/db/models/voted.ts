@@ -5,7 +5,11 @@ import { DataType } from 'sequelize-typescript';
 export class Voted extends Model {
   public readonly votedId!: number;
   public votedFor!: string;
+  public result!: string;
   public pollId!: string;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 Voted.init(
@@ -18,6 +22,11 @@ Voted.init(
     votedFor: {
       type: DataType.STRING,
       allowNull: false,
+    },
+    result: {
+      type: DataType.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
     pollId: {
       type: DataType.UUID,
@@ -32,5 +41,6 @@ Voted.init(
     sequelize,
     modelName: 'Voted',
     tableName: 'Voted',
+    timestamps: true,
   },
 );

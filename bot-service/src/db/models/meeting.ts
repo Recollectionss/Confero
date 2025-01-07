@@ -6,6 +6,8 @@ import { DataType } from 'sequelize-typescript';
 export class Meeting extends Model {
   public meetingId!: number;
   public date!: number;
+  public isActive!: boolean;
+
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -23,6 +25,11 @@ Meeting.init(
       type: DataType.DATE,
       allowNull: false,
       defaultValue: Date.now(),
+    },
+    isActive: {
+      type: DataType.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
   },
   {

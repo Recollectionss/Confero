@@ -2,6 +2,10 @@ import { ActionRowBuilder, ButtonBuilder, Message, TextChannel } from 'discord.j
 import { buttons, PUT_TO_A_VOTE } from '../constants/constants';
 import { CommandWithArgs } from '../commands/commands';
 import { votesResults } from '../utils/votes_results';
+import { Poll } from '../db/models/poll';
+import { Meeting } from '../db/models/meeting';
+import { Voted } from '../db/models/voted';
+import { sequelize } from '../db/db_connect';
 
 export const poll: CommandWithArgs = async (message: Message, args: string[], pollChannel: TextChannel) => {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
@@ -11,5 +15,17 @@ export const poll: CommandWithArgs = async (message: Message, args: string[], po
     components: [row],
   });
 
-  await votesResults(pollChannel, pollMessage);
+  await sequelize.transaction(async (transaction) => {
+    const meeting = await Meeting.findOne({
+      order: [['createdAt', 'DESC']],
+      transaction,
+    });
+
+    const pollStart = await Poll.create({ question: args[0], meetingId: meeting?.meetingId }, { transaction });
+
+    await Voted.create({ votedFor: args[1], pollId: pollStart.pollId }, { transaction });
+  });
+  // await votesResults(pollMessage, voted?.voteId);
+
+  await votesResults(pollMessage);
 };
