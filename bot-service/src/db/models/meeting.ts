@@ -4,7 +4,7 @@ import { sequelize } from '../db_connect';
 import { DataType } from 'sequelize-typescript';
 
 export class Meeting extends Model {
-  public meetingId!: number;
+  public meetingId!: string;
   public date!: number;
   public isActive!: boolean;
 

@@ -22,19 +22,19 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
     const tokenExist = await RegistrationOnMeeting.findOne({
       where: { userId: user.userId, meetingId: meeting.meetingId },
     });
-    if (!tokenExist) {
+    if (tokenExist) {
       await collected.reply({ content: 'Ви вже почали реєстрацію.', ephemeral: true });
       return;
     }
     const token = await RegistrationOnMeeting.create({ userId: discordUser.id, meetingId: meeting.meetingId });
 
-    const mail: MailOptionsInterface = {
-      to: user?.email as string,
-      subject: user?.name as string,
-      from: ENV_CONSTANTS.smtp.user as string,
-      text: token.token,
-    };
-    await sendMail(mail);
+    // const mail: MailOptionsInterface = {
+    //   to: user?.email as string,
+    //   subject: user?.name as string,
+    //   from: ENV_CONSTANTS.smtp.user as string,
+    //   text: token.token,
+    // };
+    // await sendMail(mail);
 
     await getTokenFromDMChannel(discordUser);
 

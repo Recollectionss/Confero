@@ -3,7 +3,7 @@ import { sequelize } from '../db_connect';
 import { DataType } from 'sequelize-typescript';
 
 export class Poll extends Model {
-  public pollId!: number;
+  public pollId!: string;
   public question!: string;
   public meetingId!: string;
   public date!: Date;
@@ -16,8 +16,10 @@ Poll.init(
   {
     pollId: {
       type: DataType.UUID,
+      defaultValue: DataType.UUIDV4,
       allowNull: false,
       unique: true,
+      primaryKey: true,
     },
     question: {
       type: DataType.STRING,

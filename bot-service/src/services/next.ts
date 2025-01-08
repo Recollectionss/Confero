@@ -17,7 +17,7 @@ export const next: CommandWithoutArgs = async (pollChannel: TextChannel) => {
       components: [row],
     });
 
-    await votesResults(pollMessage);
+    // await votesResults(pollMessage);
   }
 
   stateForNextCommand.currentIndex++;
