@@ -1,16 +1,19 @@
 import { Model } from 'sequelize';
 import { sequelize } from '../db_connect';
 import { DataType } from 'sequelize-typescript';
+import { User } from './user';
 
 export class UserVoice extends Model {
   public readonly voiceId!: string;
-  public voice!: 'За' | 'Проти' | 'Утримався' | 'Не голосував';
+  public voice!: 'За' | 'Проти' | 'Утримався' | 'Не голосував/ла';
 
   public voteId!: string;
   public userId!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public User?: User;
 }
 
 UserVoice.init(
@@ -23,7 +26,7 @@ UserVoice.init(
       defaultValue: DataType.UUIDV4,
     },
     voice: {
-      type: DataType.STRING,
+      type: DataType.ENUM('За', 'Проти', 'Утримався', 'Не голосував/ла'),
       allowNull: false,
     },
     votedId: {

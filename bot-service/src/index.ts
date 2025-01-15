@@ -7,7 +7,7 @@ dotenv.config();
 
 let pollChannel: TextChannel;
 
-const client = new Client({
+export const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
