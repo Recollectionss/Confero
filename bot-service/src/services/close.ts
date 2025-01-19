@@ -6,27 +6,30 @@ import { Meeting } from '../db/models/meeting';
 import { Poll } from '../db/models/poll';
 import { Voted } from '../db/models/voted';
 import { votesResults } from '../utils/votes_results';
+import { getAllResultsFromMeeting } from '../utils/get_all_results_from_meeting';
 
-export const close: CommandWithoutArgs = async (pollChannel: TextChannel) => {
+export const close: CommandWithoutArgs = async (channel: TextChannel) => {
   const row: ActionRowBuilder<ButtonBuilder> = new ActionRowBuilder<ButtonBuilder>().addComponents(...buttons);
 
-  const pollMessage = await pollChannel.send({
+  const pollMessage = await channel.send({
     content: `${PUT_TO_A_VOTE} \n ${CLOSE_OF_THE_MEETING}`,
     components: [row],
   });
 
   await sequelize.transaction(async (transaction) => {
-    const meeting = await Meeting.findOne({
+    const meeting = (await Meeting.findOne({
       where: { isActive: true },
       transaction,
-    });
+    })) as Meeting;
+
     const pollStart = await Poll.create(
       { question: CLOSE_OF_THE_MEETING, meetingId: meeting?.meetingId },
       { transaction },
     );
 
     const voted = await Voted.create({ votedFor: CLOSE_OF_THE_MEETING, pollId: pollStart.pollId }, { transaction });
+
     await votesResults(pollMessage, voted);
+    await getAllResultsFromMeeting(channel, meeting);
   });
-  // await votesResults(pollMessage);
 };
