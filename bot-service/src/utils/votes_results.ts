@@ -132,13 +132,11 @@ const sendResultsVoting = async (voted: Voted, reason: string, totalVotes: numbe
     }
 
     await channel.send(resultMessage);
-    await getUsersVoice(voted.votedId, channel);
     return;
   }
   if (totalVotes < 6) {
     resultMessage += 'Рішення не прийнято недостатня кількість голосів';
     await channel.send(resultMessage);
-    await getUsersVoice(voted.votedId, channel);
     return;
   }
 
@@ -152,7 +150,6 @@ const sendResultsVoting = async (voted: Voted, reason: string, totalVotes: numbe
   }
 
   await channel.send(resultMessage);
-  await getUsersVoice(voted.votedId, channel);
   return;
 };
 

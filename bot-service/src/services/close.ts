@@ -1,6 +1,10 @@
 import { ActionRowBuilder, ButtonBuilder, TextChannel } from 'discord.js';
 import { buttons, CLOSE_OF_THE_MEETING, PUT_TO_A_VOTE } from '../constants/constants';
 import { CommandWithoutArgs } from '../commands/commands';
+import { sequelize } from '../db/db_connect';
+import { Meeting } from '../db/models/meeting';
+import { Poll } from '../db/models/poll';
+import { Voted } from '../db/models/voted';
 import { votesResults } from '../utils/votes_results';
 
 export const close: CommandWithoutArgs = async (pollChannel: TextChannel) => {
@@ -11,5 +15,18 @@ export const close: CommandWithoutArgs = async (pollChannel: TextChannel) => {
     components: [row],
   });
 
+  await sequelize.transaction(async (transaction) => {
+    const meeting = await Meeting.findOne({
+      where: { isActive: true },
+      transaction,
+    });
+    const pollStart = await Poll.create(
+      { question: CLOSE_OF_THE_MEETING, meetingId: meeting?.meetingId },
+      { transaction },
+    );
+
+    const voted = await Voted.create({ votedFor: CLOSE_OF_THE_MEETING, pollId: pollStart.pollId }, { transaction });
+    await votesResults(pollMessage, voted);
+  });
   // await votesResults(pollMessage);
 };
