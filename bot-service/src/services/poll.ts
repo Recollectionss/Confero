@@ -15,14 +15,15 @@ export const poll: CommandWithArgs = async (message: Message, args: string[], po
     components: [row],
   });
 
-  await sequelize.transaction(async (transaction) => {
+  const voted = await sequelize.transaction(async (transaction) => {
     const meeting = await Meeting.findOne({
       where: { isActive: true },
       transaction,
     });
     const pollStart = await Poll.create({ question: args[0], meetingId: meeting?.meetingId }, { transaction });
 
-    const voted = await Voted.create({ votedFor: args[0], pollId: pollStart.pollId }, { transaction });
-    await votesResults(pollMessage, voted);
+    return await Voted.create({ votedFor: args[1], pollId: pollStart.pollId }, { transaction });
   });
+
+  await votesResults(pollMessage, voted);
 };

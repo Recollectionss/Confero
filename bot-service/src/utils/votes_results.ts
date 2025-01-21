@@ -108,6 +108,14 @@ const sendResultsVoting = async (voted: Voted, reason: string, totalVotes: numbe
       votes['Не голосував/ла']++;
     }
   });
+  if (
+    votes[VOTING_OPTIONS.FOR] >
+    votes[VOTING_OPTIONS.AGAINST] + votes[VOTING_OPTIONS.ABSTAINED] + votes[VOTING_OPTIONS.NOT_VOTED]
+  ) {
+    voted.result = 'Рішення прийнято.';
+  } else {
+    voted.result = 'Рішення не прийнято.';
+  }
   let resultMessage: string;
 
   resultMessage = `Результати голосування:

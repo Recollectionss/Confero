@@ -1,13 +1,10 @@
 import { Message, TextChannel } from 'discord.js';
 import { poll } from '../services/poll';
-import { set } from '../services/set';
-import { today } from '../services/today';
-import { today_info } from '../services/today_info';
-import { next } from '../services/next';
 import { open } from '../services/open';
 import { close } from '../services/close';
 import { help } from '../services/help';
 import { registry_open } from '../services/registry_open';
+import { addVote } from '../services/add_vote';
 
 export type CommandWithArgs = (message: Message, args: string[], poolChannel: TextChannel) => Promise<void>;
 
@@ -21,15 +18,12 @@ type CommandsList = {
 export const commands: CommandsList = {
   withArgs: {
     poll: poll,
-    set: set,
+    add_vote: addVote,
   },
   withoutArgs: {
     help: help,
     open: open,
     close: close,
-    today: today,
-    today_info: today_info,
-    next: next,
     registry_open: registry_open,
   },
 };

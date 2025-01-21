@@ -16,7 +16,7 @@ export const close: CommandWithoutArgs = async (channel: TextChannel) => {
     components: [row],
   });
 
-  await sequelize.transaction(async (transaction) => {
+  const [meeting, voted] = await sequelize.transaction(async (transaction) => {
     const meeting = (await Meeting.findOne({
       where: { isActive: true },
       transaction,
@@ -28,8 +28,9 @@ export const close: CommandWithoutArgs = async (channel: TextChannel) => {
     );
 
     const voted = await Voted.create({ votedFor: CLOSE_OF_THE_MEETING, pollId: pollStart.pollId }, { transaction });
-
-    await votesResults(pollMessage, voted);
-    await getAllResultsFromMeeting(channel, meeting);
+    return [meeting, voted];
   });
+
+  await votesResults(pollMessage, voted);
+  await getAllResultsFromMeeting(channel, meeting);
 };

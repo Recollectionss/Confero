@@ -38,9 +38,6 @@ class CommandHandler {
     if (!argsJoined) throw new Error('Invalid args');
 
     if (argsJoined.includes('/')) {
-      if (command !== 'set') {
-        throw new Error('Invalid args');
-      }
       trueArgs = argsJoined.split('/');
     } else {
       trueArgs = [argsJoined];

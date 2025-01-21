@@ -15,10 +15,10 @@ export const open: CommandWithoutArgs = async (pollChannel: TextChannel) => {
     components: [row],
   });
 
-  await sequelize.transaction(async (transaction) => {
+  const voted = await sequelize.transaction(async (transaction) => {
     const meeting = await Meeting.findOne({ where: { isActive: true }, transaction });
     const poll = await Poll.create({ question: OPEN_OF_THE_MEETING, meetingId: meeting?.meetingId }, { transaction });
-    const voted = await Voted.create({ votedFor: OPEN_OF_THE_MEETING, pollId: poll?.pollId }, { transaction });
-    votesResults(pollMessage, voted);
+    return await Voted.create({ votedFor: OPEN_OF_THE_MEETING, pollId: poll?.pollId }, { transaction });
   });
+  await votesResults(pollMessage, voted);
 };

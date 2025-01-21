@@ -27,8 +27,7 @@ Voted.init(
     },
     result: {
       type: DataType.BOOLEAN,
-      allowNull: false,
-      defaultValue: true,
+      allowNull: true,
     },
     pollId: {
       type: DataType.UUID,

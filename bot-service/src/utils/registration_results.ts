@@ -5,6 +5,7 @@ import { MailOptionsInterface, sendMail } from './send_mail';
 import { ENV_CONSTANTS } from '../constants/env_constants';
 import { RegistrationOnMeeting } from '../db/models';
 import { Meeting } from '../db/models/meeting';
+import { Op } from 'sequelize';
 
 export const registrationResults = async (message: Message, meeting: Meeting) => {
   const collector = message.createMessageComponentCollector({
@@ -44,6 +45,7 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
   });
 
   collector.on('end', async () => {
+    await getAllNotRegisteredUsers(meeting);
     let result: string = 'Результати реєстрації: \n';
 
     try {
@@ -63,8 +65,12 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
       const minTargetVotes =
         registeredUsers.length % 2 === 1 ? registeredUsers.length / 2 : registeredUsers.length / 2 + 1;
 
-      result += `Всього зареєстровано ${registrations.length} \nКворум - ${kvorum ? 'є' : 'немає'} \n`;
-      result += `Мінімальна кількість голосів для прийняття рішення: ${minTargetVotes} \n`;
+      if (kvorum) {
+        result += `Всього зареєстровано ${registrations.length} \nКворум - ${kvorum ? 'є' : 'немає'} \n`;
+        result += `Мінімальна кількість голосів для прийняття рішення: ${minTargetVotes} \n`;
+      } else {
+        result += `Всього зареєстровано ${registrations.length} \nКворум - 'немає' \n`;
+      }
 
       registrations.forEach((registration) => {
         const user = registration.User;
@@ -75,6 +81,7 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
         }
       });
       await (message.channel as TextChannel).send(result);
+      await Meeting.destroy({ where: { isActive: true } });
     } catch (error) {
       console.log('Помилка під час отримання реєстрацій:', error);
     }
@@ -128,4 +135,31 @@ const getTokenFromDMChannel = async (discordUser: DiscordUser) => {
       discordUser.send('⏱️ Час очікування вичерпано. Спробуйте ще раз.');
     }
   });
+};
+
+const getAllNotRegisteredUsers = async (meeting: Meeting) => {
+  try {
+    const registeredUserIds = await RegistrationOnMeeting.findAll({
+      where: { meetingId: meeting.meetingId },
+      attributes: ['userId'],
+    }).then((users) => users.map((user) => user.userId));
+
+    const nonRegisteredUsers = await User.findAll({
+      where: {
+        userId: {
+          [Op.notIn]: registeredUserIds,
+        },
+      },
+    });
+
+    const newRegistrations = nonRegisteredUsers.map((user) => ({
+      meetingId: meeting.meetingId,
+      userId: user.userId,
+    }));
+
+    await RegistrationOnMeeting.bulkCreate(newRegistrations);
+  } catch (error) {
+    console.error('Error registering users:', error);
+    throw error; // Прокинути помилку для подальшої обробки
+  }
 };
