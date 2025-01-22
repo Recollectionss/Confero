@@ -15,14 +15,13 @@ export const addVote: CommandWithArgs = async (message: Message, args: string[],
       attributes: ['pollId', 'question'],
       transaction,
     });
+    if (!poll) {
+      throw new Error('Не можна створити vote без існуючого poll');
+    }
 
     const voted = await Voted.create({ votedFor: args[0], pollId: poll?.pollId }, { transaction });
     return [poll, voted];
   });
-
-  if (!poll || !voted) {
-    throw new Error('Failed to retrieve poll or record vote.');
-  }
 
   const pollMessage = await pollChannel.send({
     content: `${poll?.question}  ${PUT_TO_A_VOTE} \n ${args[0]}`,
