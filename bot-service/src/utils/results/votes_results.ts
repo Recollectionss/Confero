@@ -47,7 +47,7 @@ const collectInteraction = async (interaction: ButtonInteraction, votedId: numbe
   const userVoiceExist = await UserVoice.findOne({ where: { votedId: votedId, userId: user.userId } });
   if (userVoiceExist) {
     userVoiceExist.voice = vote;
-    userVoiceExist.save();
+    await userVoiceExist.save();
 
     await interaction.reply({
       content: `Ви змінили голос на: ${(interaction.component as ButtonComponent).label}`,

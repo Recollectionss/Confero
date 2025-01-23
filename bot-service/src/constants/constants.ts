@@ -8,12 +8,13 @@ export const VOTING_OPTIONS = {
 } as const;
 
 export const buttons: ButtonBuilder[] = [
-  new ButtonBuilder().setCustomId(VOTING_OPTIONS.FOR).setLabel(VOTING_OPTIONS.FOR).setStyle(ButtonStyle.Primary),
+  new ButtonBuilder().setCustomId(VOTING_OPTIONS.FOR).setLabel(VOTING_OPTIONS.FOR).setStyle(ButtonStyle.Success),
   new ButtonBuilder().setCustomId(VOTING_OPTIONS.AGAINST).setLabel(VOTING_OPTIONS.AGAINST).setStyle(ButtonStyle.Danger),
   new ButtonBuilder()
     .setCustomId(VOTING_OPTIONS.ABSTAINED)
     .setLabel(VOTING_OPTIONS.ABSTAINED)
-    .setStyle(ButtonStyle.Secondary),
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder().setCustomId(VOTING_OPTIONS.NOT_VOTED).setLabel('Відмінити голос').setStyle(ButtonStyle.Secondary),
 ];
 export const REGISTRATION_BUTTON: ButtonBuilder = new ButtonBuilder()
   .setCustomId('registrationButton')
