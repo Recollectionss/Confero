@@ -7,6 +7,7 @@ export class Meeting extends Model {
   public meetingId!: string;
   public date!: number;
   public isActive!: boolean;
+  public minTargetVotes!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -30,6 +31,11 @@ Meeting.init(
       type: DataType.BOOLEAN,
       allowNull: false,
       defaultValue: true,
+    },
+    minTargetVotes: {
+      type: DataType.NUMBER,
+      allowNull: false,
+      defaultValue: 0,
     },
   },
   {

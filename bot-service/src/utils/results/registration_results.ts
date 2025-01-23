@@ -62,10 +62,11 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
 
       const registeredUsers = registrations.filter((user) => user.userVerified);
       const kvorum = TARGET_VOTES - registeredUsers.length < registeredUsers.length;
-      const minTargetVotes =
-        registeredUsers.length % 2 === 1 ? registeredUsers.length / 2 : registeredUsers.length / 2 + 1;
 
       if (kvorum) {
+        const minTargetVotes = Math.round(registeredUsers.length / 2);
+        meeting.minTargetVotes = minTargetVotes;
+        await meeting.save();
         result += `Всього зареєстровано ${registrations.length} \nКворум - ${kvorum ? 'є' : 'немає'} \n`;
         result += `Мінімальна кількість голосів для прийняття рішення: ${minTargetVotes} \n`;
       } else {

@@ -142,21 +142,19 @@ const sendResultsVoting = async (voted: Voted, reason: string, totalVotes: numbe
     await channel.send(resultMessage);
     return;
   }
-  if (totalVotes < 6) {
+  const meeting = (await Meeting.findOne({ where: { isActive: true }, attributes: ['minTargetVotes'] })) as Meeting;
+  if (totalVotes < meeting.minTargetVotes) {
     resultMessage += 'Рішення не прийнято недостатня кількість голосів';
     await channel.send(resultMessage);
     return;
   }
 
-  if (
-    votes[VOTING_OPTIONS.FOR] >
-    votes[VOTING_OPTIONS.AGAINST] + votes[VOTING_OPTIONS.ABSTAINED] + votes[VOTING_OPTIONS.NOT_VOTED]
-  ) {
+  if (votes[VOTING_OPTIONS.FOR] > meeting.minTargetVotes) {
     resultMessage += 'Рішення прийнято.';
   } else {
     resultMessage += 'Рішення не прийнято.';
   }
-
+  await meeting.destroy();
   await channel.send(resultMessage);
   return;
 };
