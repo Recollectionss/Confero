@@ -11,8 +11,8 @@ export const ENV_CONSTANTS = {
   //postgres
   db: {
     port: Number(process.env.POSTGRES_PORT),
-    username: process.env.POSTGRES_USERNAME,
-    password: String(process.env.POSTGRES_PASSWORD),
+    username: process.env.POSTGRES_APP_USER_NAME,
+    password: String(process.env.POSTGRES_APP_USER_PASSWORD),
     host: Number(process.env.POSTGRES_HOST),
     database: process.env.POSTGRES_DB,
   },

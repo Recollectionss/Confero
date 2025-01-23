@@ -1,22 +1,31 @@
-import { TextChannel } from 'discord.js';
 import { Meeting } from '../db/models/meeting';
 import { Poll } from '../db/models/poll';
-import { RegistrationOnMeeting, User, UserVoice } from '../db/models';
+import { RegistrationOnMeeting, sequelize, User, UserVoice } from '../db/models';
 import { Voted } from '../db/models/voted';
 import { VOTING_OPTIONS } from '../constants/constants';
+import { CommandWithoutArgs } from '../commands/commands';
 
-export const getAllResultsFromMeeting = async (channel: TextChannel, meeting: Meeting) => {
-  const registeredUsers = await RegistrationOnMeeting.findAll({
-    where: {
-      meetingId: meeting.meetingId,
-    },
-    include: [
-      {
-        model: User,
-        as: 'User',
-        attributes: ['name'],
+export const getResults: CommandWithoutArgs = async (channel) => {
+  const [meeting, registeredUsers] = await sequelize.transaction(async (transaction) => {
+    const meeting = (await Meeting.findOne({
+      order: [['createdAt', 'DESC']],
+      attributes: ['meetingId'],
+      transaction,
+    })) as Meeting;
+    const registeredUsers = await RegistrationOnMeeting.findAll({
+      where: {
+        meetingId: meeting.meetingId,
       },
-    ],
+      include: [
+        {
+          model: User,
+          as: 'User',
+          attributes: ['name'],
+        },
+      ],
+      transaction,
+    });
+    return [meeting, registeredUsers];
   });
 
   let result: string = 'Зареєстровані делегати: \n\n';

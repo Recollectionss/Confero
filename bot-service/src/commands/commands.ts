@@ -5,6 +5,7 @@ import { close } from '../services/close';
 import { help } from '../services/help';
 import { registry_open } from '../services/registry_open';
 import { addVote } from '../services/add_vote';
+import { getResults } from '../services/get_results';
 
 export type CommandWithArgs = (message: Message, args: string[], poolChannel: TextChannel) => Promise<void>;
 
@@ -25,5 +26,6 @@ export const commands: CommandsList = {
     open: open,
     close: close,
     registry_open: registry_open,
+    get_results: getResults,
   },
 };
