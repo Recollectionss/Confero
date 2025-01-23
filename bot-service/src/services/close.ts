@@ -5,7 +5,7 @@ import { sequelize } from '../db/db_connect';
 import { Meeting } from '../db/models/meeting';
 import { Poll } from '../db/models/poll';
 import { Voted } from '../db/models/voted';
-import { votesResults } from '../utils/votes_results';
+import { votesResults } from '../utils/results/votes_results';
 import { getAllResultsFromMeeting } from '../utils/get_all_results_from_meeting';
 
 export const close: CommandWithoutArgs = async (channel: TextChannel) => {

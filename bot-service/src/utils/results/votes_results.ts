@@ -1,9 +1,9 @@
-import { TARGET_VOTES, TIME_TO_VOTE, VOTING_OPTIONS } from '../constants/constants';
+import { TARGET_VOTES, TIME_TO_VOTE, VOTING_OPTIONS } from '../../constants/constants';
 import { ButtonComponent, ButtonInteraction, ComponentType, Message, TextChannel } from 'discord.js';
-import { RegistrationOnMeeting, User } from '../db/models';
-import { Voted } from '../db/models/voted';
-import { Meeting } from '../db/models/meeting';
-import { UserVoice } from '../db/models';
+import { RegistrationOnMeeting, User } from '../../db/models';
+import { Voted } from '../../db/models/voted';
+import { Meeting } from '../../db/models/meeting';
+import { UserVoice } from '../../db/models';
 
 export const votesResults = async (message: Message, voted: Voted) => {
   const collector = message.createMessageComponentCollector({

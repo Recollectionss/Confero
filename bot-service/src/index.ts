@@ -1,7 +1,7 @@
 import { Client, Events, GatewayIntentBits, Message, Partials, TextChannel } from 'discord.js';
 import { connectDB } from './db/db_connect';
 import { ENV_CONSTANTS } from './constants/env_constants';
-import CommandHandler from './utils/command_handler';
+import CommandHandler from './utils/command_handler/command_handler';
 import dotenv from 'dotenv';
 dotenv.config();
 

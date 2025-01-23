@@ -1,10 +1,10 @@
 import { ComponentType, Message, TextChannel, User as DiscordUser } from 'discord.js';
-import { TARGET_VOTES, TIME_TO_VOTE } from '../constants/constants';
-import { User } from '../db/models';
-import { MailOptionsInterface, sendMail } from './send_mail';
-import { ENV_CONSTANTS } from '../constants/env_constants';
-import { RegistrationOnMeeting } from '../db/models';
-import { Meeting } from '../db/models/meeting';
+import { TARGET_VOTES, TIME_TO_VOTE } from '../../constants/constants';
+import { User } from '../../db/models';
+import { MailOptionsInterface, sendMail } from '../send_mail';
+import { ENV_CONSTANTS } from '../../constants/env_constants';
+import { RegistrationOnMeeting } from '../../db/models';
+import { Meeting } from '../../db/models/meeting';
 import { Op } from 'sequelize';
 
 export const registrationResults = async (message: Message, meeting: Meeting) => {

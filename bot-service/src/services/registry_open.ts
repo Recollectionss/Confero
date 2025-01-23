@@ -1,7 +1,7 @@
 import { CommandWithoutArgs } from '../commands/commands';
 import { ActionRowBuilder, ButtonBuilder, TextChannel } from 'discord.js';
 import { REGISTRATION_BUTTON } from '../constants/constants';
-import { registrationResults } from '../utils/registration_results';
+import { registrationResults } from '../utils/results/registration_results';
 import { Meeting } from '../db/models/meeting';
 
 export const registry_open: CommandWithoutArgs = async (channel: TextChannel) => {

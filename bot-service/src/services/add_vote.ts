@@ -4,7 +4,7 @@ import { buttons, PUT_TO_A_VOTE } from '../constants/constants';
 import { sequelize } from '../db/db_connect';
 import { Poll } from '../db/models/poll';
 import { Voted } from '../db/models/voted';
-import { votesResults } from '../utils/votes_results';
+import { votesResults } from '../utils/results/votes_results';
 
 export const addVote: CommandWithArgs = async (message: Message, args: string[], pollChannel: TextChannel) => {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
@@ -15,10 +15,6 @@ export const addVote: CommandWithArgs = async (message: Message, args: string[],
       attributes: ['pollId', 'question'],
       transaction,
     });
-    if (!poll) {
-      throw new Error('Не можна створити vote без існуючого poll');
-    }
-
     const voted = await Voted.create({ votedFor: args[0], pollId: poll?.pollId }, { transaction });
     return [poll, voted];
   });

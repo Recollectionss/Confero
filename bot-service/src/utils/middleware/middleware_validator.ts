@@ -1,24 +1,34 @@
 import { Transaction } from 'sequelize';
-import { RegistrationOnMeeting } from '../db/models';
-import { Meeting } from '../db/models/meeting';
-import { Poll } from '../db/models/poll';
-import { OPEN_OF_THE_MEETING } from '../constants/constants';
-import { Voted } from '../db/models/voted';
+import { RegistrationOnMeeting } from '../../db/models';
+import { Meeting } from '../../db/models/meeting';
+import { Poll } from '../../db/models/poll';
+import { OPEN_OF_THE_MEETING } from '../../constants/constants';
+import { Voted } from '../../db/models/voted';
 
-export class Validator {
+export class MiddlewareValidator {
   constructor(private readonly transaction: Transaction) {}
 
-  async checkMeeting(meeting: Meeting) {
-    if (!meeting) {
-      throw new Error('Ви не можете створити голосування без відкритого засідання');
+  async activeMeetingExist() {
+    const meeting = await Meeting.findOne({
+      where: { isActive: true },
+      attributes: ['meetingId'],
+      transaction: this.transaction,
+    });
+    if (meeting) {
+      throw new Error('Існує вже відкрите засідання');
     }
     return this;
   }
-  async checkOpenPoll(meetingId: string) {
+  async meetingIsOpen() {
+    const meeting = await Meeting.findOne({
+      where: { isActive: true },
+      attributes: ['meetingId'],
+      transaction: this.transaction,
+    });
     const openPoll = await Poll.findOne({
       where: {
         question: OPEN_OF_THE_MEETING,
-        meetingId: meetingId,
+        meetingId: meeting?.meetingId,
       },
       transaction: this.transaction,
     });
@@ -30,10 +40,15 @@ export class Validator {
     return this;
   }
 
-  async checkRegisteredUsers(meetingId: string) {
+  async checkRegisteredUsers() {
+    const meeting = await Meeting.findOne({
+      where: { isActive: true },
+      attributes: ['meetingId'],
+      transaction: this.transaction,
+    });
     const registeredUserCount = await RegistrationOnMeeting.count({
       where: {
-        meetingId: meetingId,
+        meetingId: meeting?.meetingId,
         userVerified: true,
       },
       transaction: this.transaction,

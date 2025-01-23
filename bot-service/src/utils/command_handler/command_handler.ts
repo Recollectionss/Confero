@@ -1,6 +1,7 @@
 import { Message, TextChannel } from 'discord.js';
-import { commands } from '../commands/commands';
-import { ENV_CONSTANTS } from '../constants/env_constants';
+import { commands } from '../../commands/commands';
+import { ENV_CONSTANTS } from '../../constants/env_constants';
+import { Middleware } from '../middleware/middleware';
 
 class CommandHandler {
   async handle(message: Message, pollChannel: TextChannel) {
@@ -14,16 +15,18 @@ class CommandHandler {
       await (message.channel as TextChannel).send(`Unknown command: ${command}`);
       return;
     }
-    if (commands.withoutArgs[command]) {
-      await commands.withoutArgs[command](command === 'help' ? (message.channel as TextChannel) : pollChannel);
-    } else {
-      try {
+    try {
+      await new Middleware(command).use();
+
+      if (commands.withoutArgs[command]) {
+        await commands.withoutArgs[command](command === 'help' ? (message.channel as TextChannel) : pollChannel);
+      } else {
         const args = await this.parseArgs(command, argsParts);
         await commands.withArgs[command](message, args, pollChannel);
-      } catch (e) {
-        console.error(`Error executing command "${command}":`, e);
-        await (message.channel as TextChannel).send(`${e}`);
       }
+    } catch (e) {
+      console.error(`Error executing command "${command}":`, e);
+      await (message.channel as TextChannel).send(`${e}`);
     }
   }
 
