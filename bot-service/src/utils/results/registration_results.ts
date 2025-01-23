@@ -69,7 +69,7 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
         result += `Всього зареєстровано ${registrations.length} \nКворум - ${kvorum ? 'є' : 'немає'} \n`;
         result += `Мінімальна кількість голосів для прийняття рішення: ${minTargetVotes} \n`;
       } else {
-        result += `Всього зареєстровано ${registrations.length} \nКворум - 'немає' \n`;
+        result += `Всього зареєстровано ${registrations.length} \nКворум - немає \n`;
       }
 
       registrations.forEach((registration) => {

@@ -69,12 +69,12 @@ const getResultFromPoll = async (poll: Poll): Promise<string> => {
         votes[userVoice.voice]++;
       }
     });
-    result += `Результати голосування:
+    result += `\nРезультати голосування:
         ЗА: ${votes[VOTING_OPTIONS.FOR]}
         Проти: ${votes[VOTING_OPTIONS.AGAINST]}
         Утримуюсь: ${votes[VOTING_OPTIONS.ABSTAINED]}
         Не голосувало: ${votes[VOTING_OPTIONS.NOT_VOTED]}
-        `;
+        \n`;
   }
   return result;
 };

@@ -161,26 +161,6 @@ const sendResultsVoting = async (voted: Voted, reason: string, totalVotes: numbe
   return;
 };
 
-const getUsersVoice = async (votedId: number, channel: TextChannel) => {
-  const usersVoice = await UserVoice.findAll({
-    where: { votedId },
-    include: [
-      {
-        model: User,
-        as: 'User',
-        attributes: ['name'],
-      },
-    ],
-  });
-
-  let resultMessage = '';
-  usersVoice.forEach((userVoice) => {
-    resultMessage += `${userVoice.User?.name} | ${userVoice.voice}`;
-  });
-
-  await channel.send(resultMessage);
-};
-
 export const isVotingOption = (value: string): value is 'За' | 'Проти' | 'Утримався' | 'Не голосував/ла' => {
   return Object.values(VOTING_OPTIONS).includes(value as any);
 };
