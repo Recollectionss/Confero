@@ -2,6 +2,5 @@ node_modules
 bot-service/.env
 .idea/
 /docker/.env
-/mail-service/.env
-/mail-service/dist/
 /bot-service/src/db/seeders/20250103131237-create_delegates.js
+/.idea/
