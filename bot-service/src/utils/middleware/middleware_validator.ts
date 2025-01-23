@@ -63,12 +63,32 @@ export class MiddlewareValidator {
   async checkExistPoll() {
     const poll = await Poll.findOne({
       order: [['createdAt', 'DESC']],
-      attributes: ['pollId', 'question'],
+      attributes: ['pollId'],
       transaction: this.transaction,
     });
     if (!poll) {
       throw new Error('Не можна створити vote без існуючого poll');
     }
     return this;
+  }
+
+  async lastVotedClosed() {
+    const poll = await Poll.findOne({
+      order: [['createdAt', 'DESC']],
+      attributes: ['pollId'],
+      transaction: this.transaction,
+    });
+    if (!poll) {
+      return this;
+    }
+    const voted = await Voted.findOne({
+      where: { pollId: poll?.pollId },
+      order: [['createdAt', 'DESC']],
+      attributes: ['result'],
+      transaction: this.transaction,
+    });
+    if (!voted?.result) {
+      throw new Error('Останнє голосування не було закінчене, зачекайта.');
+    }
   }
 }
