@@ -29,13 +29,13 @@ export const registrationResults = async (message: Message, meeting: Meeting) =>
     }
     const token = await RegistrationOnMeeting.create({ userId: discordUser.id, meetingId: meeting.meetingId });
 
-    // const mail: MailOptionsInterface = {
-    //   to: user?.email as string,
-    //   subject: user?.name as string,
-    //   from: ENV_CONSTANTS.smtp.user as string,
-    //   text: token.token,
-    // };
-    // await sendMail(mail);
+    const mail: MailOptionsInterface = {
+      to: user?.email as string,
+      subject: user?.name as string,
+      from: ENV_CONSTANTS.smtp.user as string,
+      text: token.token,
+    };
+    await sendMail(mail);
 
     await getTokenFromDMChannel(discordUser);
 
