@@ -48,10 +48,13 @@ export const getResults: CommandWithoutArgs = async (channel) => {
 
 const getResultFromPoll = async (poll: Poll): Promise<string> => {
   let result = `${poll.question} \n`;
+  let usersVote = '';
   const voteds = await Voted.findAll({ where: { pollId: poll.pollId } });
 
   for (const voted of voteds) {
-    result += `${poll.question === voted.votedFor ? '' : voted.votedFor} - ${voted.result}`;
+    result += `
+    ${poll.question === voted.votedFor ? '' : voted.votedFor}
+     - ${voted.result ? 'Рішення прийнято' : 'Рішення не прийнято'}`;
     const usersVoices = await UserVoice.findAll({
       where: {
         votedId: voted.votedId,
@@ -73,7 +76,7 @@ const getResultFromPoll = async (poll: Poll): Promise<string> => {
     };
 
     usersVoices.forEach((userVoice) => {
-      result += `${userVoice.User?.name} - ${userVoice.voice} \n`;
+      usersVote += `${userVoice.User?.name} - ${userVoice.voice} \n`;
       if (Object.keys(votes).includes(userVoice.voice)) {
         votes[userVoice.voice]++;
       }
@@ -85,5 +88,5 @@ const getResultFromPoll = async (poll: Poll): Promise<string> => {
         Не голосувало: ${votes[VOTING_OPTIONS.NOT_VOTED]}
         \n`;
   }
-  return result;
+  return result + usersVote;
 };
