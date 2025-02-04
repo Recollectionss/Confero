@@ -3,6 +3,7 @@ import { connectDB } from './db/db_connect';
 import { ENV_CONSTANTS } from './constants/env_constants';
 import CommandHandler from './utils/command_handler/command_handler';
 import dotenv from 'dotenv';
+import { HELP_COMMAND_TEXT } from './constants/constants';
 dotenv.config();
 
 let pollChannel: TextChannel;
@@ -30,6 +31,8 @@ async function startApp() {
 
     try {
       pollChannel = (await client.channels.fetch(ENV_CONSTANTS.discord.pollChannel)) as TextChannel;
+      const commandChannel = (await client.channels.fetch(ENV_CONSTANTS.discord.commandChannel)) as TextChannel;
+      await commandChannel.send(HELP_COMMAND_TEXT);
       console.log('Poll channel initialized:', pollChannel?.id);
     } catch (error) {
       console.error('Failed to fetch pollChannel:', error);
