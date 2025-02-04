@@ -21,8 +21,12 @@ export const poll: CommandWithArgs = async (message: Message, args: string[], po
       transaction,
     });
     const pollStart = await Poll.create({ question: args[0], meetingId: meeting?.meetingId }, { transaction });
+    let value = args[1];
+    if (args.length < 2) {
+      value = args[0];
+    }
 
-    return await Voted.create({ votedFor: args[1], pollId: pollStart.pollId }, { transaction });
+    return await Voted.create({ votedFor: value, pollId: pollStart.pollId }, { transaction });
   });
 
   await votesResults(pollMessage, voted);

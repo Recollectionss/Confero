@@ -17,7 +17,7 @@ const createMiddlewareChain = (...validators: Array<keyof MiddlewareValidator>) 
 export const middlewareConfig: Record<string, MiddlewareFunction[]> = {
   registry_open: [createMiddlewareChain('activeMeetingExist')],
   open: [createMiddlewareChain('checkRegisteredUsers')],
-  poll: [createMiddlewareChain('meetingIsOpen', 'lastVotedClosed')],
+  poll: [createMiddlewareChain('lastVotedClosed', 'meetingIsOpen')],
   add_vote: [createMiddlewareChain('meetingIsOpen', 'checkExistPoll', 'lastVotedClosed')],
   close: [createMiddlewareChain('meetingIsOpen', 'lastVotedClosed')],
 };

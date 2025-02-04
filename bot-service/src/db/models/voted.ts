@@ -5,7 +5,7 @@ import { DataType } from 'sequelize-typescript';
 export class Voted extends Model {
   public readonly votedId!: number;
   public votedFor!: string;
-  public result!: string;
+  public result!: boolean;
   public pollId!: string;
 
   public readonly createdAt!: Date;

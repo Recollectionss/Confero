@@ -32,9 +32,12 @@ export class MiddlewareValidator {
       },
       transaction: this.transaction,
     });
+    if (!openPoll) {
+      return this;
+    }
     const voted = await Voted.findOne({ where: { pollId: openPoll?.pollId, result: true } });
 
-    if (!openPoll || !voted) {
+    if (!voted) {
       throw new Error('Ви не можете створити голосування без відкритого засідання');
     }
     return this;
@@ -78,16 +81,16 @@ export class MiddlewareValidator {
       attributes: ['pollId'],
       transaction: this.transaction,
     });
-    if (!poll) {
+    if (!poll || poll.pollId === undefined) {
       return this;
     }
-    const voted = await Voted.findOne({
+    const voted = (await Voted.findOne({
       where: { pollId: poll?.pollId },
       order: [['createdAt', 'DESC']],
       attributes: ['result'],
       transaction: this.transaction,
-    });
-    if (!voted?.result) {
+    })) as Voted;
+    if (voted.result as boolean) {
       throw new Error('Останнє голосування не було закінчене, зачекайта.');
     }
   }

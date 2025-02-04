@@ -112,10 +112,11 @@ const sendResultsVoting = async (voted: Voted, reason: string, totalVotes: numbe
     votes[VOTING_OPTIONS.FOR] >
     votes[VOTING_OPTIONS.AGAINST] + votes[VOTING_OPTIONS.ABSTAINED] + votes[VOTING_OPTIONS.NOT_VOTED]
   ) {
-    voted.result = 'Рішення прийнято.';
+    voted.result = true;
   } else {
-    voted.result = 'Рішення не прийнято.';
+    voted.result = false;
   }
+  await voted.save();
   let resultMessage: string;
 
   resultMessage = `Результати голосування:
@@ -154,7 +155,6 @@ const sendResultsVoting = async (voted: Voted, reason: string, totalVotes: numbe
   } else {
     resultMessage += 'Рішення не прийнято.';
   }
-  await meeting.destroy();
   await channel.send(resultMessage);
   return;
 };
